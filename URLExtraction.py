@@ -4,6 +4,7 @@ import pandas as pd
 import string, time
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from nltk.stem.porter import PorterStemmer
 
 Key = os.getenv('TMDB_API_KEY')
 url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page=1"
@@ -23,11 +24,15 @@ overviews_title_df = overviews_title_df.str.translate(str.maketrans("","",string
 
 #Word Tokenization
 overviews_title_df = overviews_title_df.apply(word_tokenize)
-print(overviews_title_df[0])
+# print(overviews_title_df[0])
 
 #Stop Word Removal
 # print(stopwords.words('english'))
 overviews_title_df = overviews_title_df.apply(lambda x: [word for word in x if word not in stopwords.words('english')])
+
+#Stemming
+port_stem = PorterStemmer()
+overviews_title_df = overviews_title_df.apply(lambda text: [port_stem.stem(word) for word in text])
 
 
 print(overviews_title_df[0])
