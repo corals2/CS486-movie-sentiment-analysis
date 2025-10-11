@@ -27,6 +27,7 @@ print(overviews_title_df[0])
 
 #Stop Word Removal
 # print(stopwords.words('english'))
-# overviews_title_df = overviews_title_df.str
+overviews_title_df = overviews_title_df.apply(lambda x: [word for word in x if word not in stopwords.words('english')])
 
-#print(overviews_title_df[1])
+
+print(overviews_title_df[0])
