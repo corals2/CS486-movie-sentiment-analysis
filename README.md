@@ -47,6 +47,8 @@ I*F there is a space complexity problem: remove movies lower than the threshold 
 ### Next Meet (19-25 Oct anytime):
 >__To us: "feel free to add more tasks as needed!"__
 - Start transforming movie reviews into vectors (__*TF-IDF*__)
+- Work on getting the genres for each of the movies using genre-ids.
+- Implement multi-class classification (**_use softmax (not sigmoid)_**)
 
 > May need to work more days during this period (**Project Milestone 1 due!**).
 
