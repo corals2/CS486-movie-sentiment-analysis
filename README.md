@@ -48,5 +48,5 @@ I*F there is a space complexity problem: remove movies lower than the threshold 
 >__To us: "feel free to add more tasks as needed!"__
 - Start transforming movie reviews into vectors (__*TF-IDF*__)
 
-> May need to meet more days during this period (**Project Milestone 1 due!**).
+> May need to work more days during this period (**Project Milestone 1 due!**).
 
