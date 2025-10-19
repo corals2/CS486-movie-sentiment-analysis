@@ -55,10 +55,12 @@ I*F there is a space complexity problem: remove movies lower than the threshold 
 - Handle multiple pages for json output into the dataframe.
 - Apply text classification, start with **label encoding** based on genre from the dataframe. 
     - *More label encoding based on different criterias to be applied later as needed.*
+- Implement the model, train and test it for classification based on accuracy.
+
+> May need to work more than one day during this period (**Project Milestone 1 due!**).
 - **TO-DO**:
     - [ ] **Day 1**, *start implementation, and __add more tasks__*.
     - [ ] **Day 2**, *complete the requirements.*
     - [ ] **Day 3**, *if needed*.
 
-> May need to work more days during this period (**Project Milestone 1 due!**).
 
