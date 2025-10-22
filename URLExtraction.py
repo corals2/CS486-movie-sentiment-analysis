@@ -41,7 +41,7 @@ overviews_title_df = pd.DataFrame(overviews_title_df)
 overviews_title_df.insert(0, "title", df_r[['title']])
 overviews_title_df.insert(2, "genre_ids", df_r[['genre_ids']])
 
-genre_url = "https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
+genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
 
 
 print(overviews_title_df.head())
