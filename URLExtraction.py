@@ -15,7 +15,6 @@ datafrm = pd.read_json(url)
 datafrm = pd.DataFrame(datafrm)
 df_r = pd.json_normalize(datafrm['results'])
 moviedata = df_r[['title', 'genre_ids', 'overview', 'vote_average']]
-# print(moviedata.head())
 
 #Lowercasing
 overviews_title_df = moviedata['overview'].str.lower()
@@ -25,10 +24,8 @@ overviews_title_df = overviews_title_df.str.translate(str.maketrans("","",string
 
 #Word Tokenization
 overviews_title_df = overviews_title_df.apply(word_tokenize)
-# print(overviews_title_df[0])
 
 #Stop Word Removal
-# print(stopwords.words('english'))
 overviews_title_df = overviews_title_df.apply(lambda x: [word for word in x if word not in stopwords.words('english')])
 
 #Stemming
@@ -45,3 +42,14 @@ genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&langua
 
 
 print(overviews_title_df.head())
+
+# word to vec model
+our_model = gensim.models.Word2Vec(
+    window= 10, # window around target word
+    min_count=2,
+)
+
+# build vocab from overviews column in dataframe, this is a list of unique words
+our_model.build_vocab(overviews_title_df['overview'])
+
+
