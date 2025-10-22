@@ -1,6 +1,7 @@
 import requests
 import os
 import pandas as pd
+import gensim
 import string, time
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
