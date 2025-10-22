@@ -46,10 +46,14 @@ print(overviews_title_df.head())
 # word to vec model
 our_model = gensim.models.Word2Vec(
     window= 10, # window around target word
-    min_count=2,
+    min_count=1,
 )
 
 # build vocab from overviews column in dataframe, this is a list of unique words
 our_model.build_vocab(overviews_title_df['overview'])
+# print(our_model.wv.index_to_key)
 
+# train the word2vec model.
+our_model.train(overviews_title_df['overview'], total_examples=our_model.corpus_count, epochs=our_model.epochs)
 
+print(our_model.wv.most_similar("banker"))
