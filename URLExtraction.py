@@ -34,5 +34,11 @@ overviews_title_df = overviews_title_df.apply(lambda x: [word for word in x if w
 port_stem = PorterStemmer()
 overviews_title_df = overviews_title_df.apply(lambda text: [port_stem.stem(word) for word in text])
 
+overviews_title_df = pd.DataFrame(overviews_title_df)
+
+# new_df = overviews_title_df.assign(title=df_r[['title']])
+new_df = overviews_title_df.insert(0, "title", df_r[['title']])
+
+genre_url = "https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
 
 print(overviews_title_df[0])
