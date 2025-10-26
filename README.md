@@ -42,25 +42,28 @@ I*F there is a space complexity problem: remove movies lower than the threshold 
 - ~~Basic json extraction into dataframe using pandas (testing).~~
 - ~~Text Preprocessing (__*lowercasing, tokenization, stop word removal, punctuation removal, stemming*__)~~
 - **TO-DO**:
-    - [x] **Meet and complete the requirement.**
+    - [x] **Meet and complete the requirements.**
 
 ### Off-time (12-18 OCT)
 > Happy Birthday Cora *(15th Oct)*
 
 ### Next Meet (19-25 Oct anytime):
+> **Completed Oct 21**
 - ~~Start transforming movie reviews into vectors (__*TF-IDF or Word2Vec*__)~~
 - ~~Start implementing genre-ids to genre pipeline (*fetch genres from site, for the corresponding genre-ids*)~~
+
+> 26th Oct (**Project Milestone 1 due!**).
+- **TO-DO**:
+    - [x] **Meet and complete the requirements.**
+
+### Next Meet (26 Oct - 1 Nov anytime): 
 - Work on getting the genres for each of the movies.
 - Implement multi-class classification (**_use softmax (not sigmoid)_**)
 - Handle multiple pages for json output into the dataframe.
 - Apply text classification, start with **label encoding** based on genre from the dataframe. 
     - *More label encoding based on different criterias to be applied later as needed.*
 - Implement the model, train and test it for classification based on accuracy.
-
-> 26th Oct (**Project Milestone 1 due!**).
 - **TO-DO**:
-    - [x] **Day 1**, *start implementation, and __add more tasks__*.
-    - [ ] **Day 2**, *complete the requirements.*
-    - [ ] **Day 3**, *if needed*.
+    - [ ] **Meet and complete the requirements.**
 
 
