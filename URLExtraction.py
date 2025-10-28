@@ -82,3 +82,14 @@ print(x) # print first overview vector
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_state=1) # split data into training and testing sets
 
+#Using RandomForestClassifier to train and test the model, and then calculating the accuracy score based on the prediction.
+our_rfc = RandomForestClassifier()
+
+#Training the model.
+our_rfc.fit(x_train, y_train)
+
+#Testing the model, getting the predicted label of the model.
+y_prediction = our_rfc.predict(x_test)
+
+#Calculating the accuracy score of the model, comparing the prediction with the true label.
+print(accuracy_score(y_prediction, y_test))
