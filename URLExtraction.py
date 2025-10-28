@@ -57,3 +57,5 @@ our_model.build_vocab(overviews_title_df['overview'])
 our_model.train(overviews_title_df['overview'], total_examples=our_model.corpus_count, epochs=our_model.epochs)
 
 print(our_model.wv.most_similar("banker"))
+
+#
