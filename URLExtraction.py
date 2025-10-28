@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
 
 Key = os.getenv('TMDB_API_KEY')
 url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page=1"
@@ -61,4 +62,14 @@ print(our_model.wv.most_similar("banker"))
 
 # Label Encoder for movie classification based on genre
 our_encoder = LabelEncoder()
-y = our_encoder.fit_transform(overviews_title_df['genre_ids'])
+y = our_encoder.fit_transform(overviews_title_df['genre_ids']) # fit and transform genre ids into numerical labels
+x = [] # list to hold overview vectors
+for overview in overviews_title_df['overview']: # create vectors for each overview
+    vector = []
+    for word in overview:
+        if word in our_model.wv:
+            vector.append(our_model.wv[word])
+    print(f"Overview: {overview}")
+    print(f"Vector: {vector}")
+    x.append(vector) # x is the list of overview vectors
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_state=1) # split data into training and testing sets
