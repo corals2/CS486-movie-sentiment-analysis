@@ -1,3 +1,4 @@
+import numpy as np
 import requests
 import os
 import pandas as pd
@@ -39,8 +40,8 @@ overviews_title_df = pd.DataFrame(overviews_title_df)
 overviews_title_df.insert(0, "title", df_r[['title']])
 #print(df_r[['genre_ids']].head())
 #print([tuple(each_genre_id) for each_genre_id in df_r['genre_ids']])
-df_r['genre_ids'] = [tuple(each_genre_id) for each_genre_id in df_r['genre_ids']] # convert list to list of tuples for unhashable type
-
+#df_r['genre_ids'] = [tuple(each_genre_id) for each_genre_id in df_r['genre_ids']] # convert list to list of tuples for unhashable type
+df_r['genre_ids'] = [np.mean(genre_list) for genre_list in df_r['genre_ids']] # convert list of tuples to list of strings
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 
 genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
@@ -76,9 +77,11 @@ for overview in overviews_title_df['overview']: # create vectors for each overvi
             vector.append(our_model.wv[word])
     #print(f"Overview: {overview}")
     #print(f"Vector: {vector}")
-    x.append(vector) # x is the list of overview vectors
+    x.append(np.mean(vector, axis=0)) # x is the list of overview vectors
 
-print(x) # print first overview vector
+
+
+#print(x) # print first overview vector
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_state=1) # split data into training and testing sets
 
