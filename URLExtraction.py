@@ -38,6 +38,10 @@ overviews_title_df = pd.DataFrame(overviews_title_df)
 
 # new_df = overviews_title_df.assign(title=df_r[['title']])
 overviews_title_df.insert(0, "title", df_r[['title']])
+print(df_r[['genre_ids']].head())
+#print([tuple(each_genre_id) for each_genre_id in df_r['genre_ids']])
+df_r[['genre_ids']] = [tuple(each_genre_id) for each_genre_id in df_r['genre_ids']]
+
 overviews_title_df.insert(2, "genre_ids", df_r[['genre_ids']])
 
 genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
@@ -62,7 +66,9 @@ print(our_model.wv.most_similar("banker"))
 
 # Label Encoder for movie classification based on genre
 our_encoder = LabelEncoder()
-y = our_encoder.fit_transform(overviews_title_df['genre_ids']) # fit and transform genre ids into numerical labels
+y = our_encoder.fit_transform(overviews_title_df["genre_ids"]) # fit and transform genre ids into numerical labels
+
+
 x = [] # list to hold overview vectors
 for overview in overviews_title_df['overview']: # create vectors for each overview
     vector = []
@@ -72,4 +78,5 @@ for overview in overviews_title_df['overview']: # create vectors for each overvi
     print(f"Overview: {overview}")
     print(f"Vector: {vector}")
     x.append(vector) # x is the list of overview vectors
+
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_state=1) # split data into training and testing sets
