@@ -58,7 +58,7 @@ I*F there is a space complexity problem: remove movies lower than the threshold 
 
 ### Next Meet (26 Oct - 1 Nov anytime): 
 - Work on getting the genres for each of the movies.
-- Implement multi-class classification (**_use softmax (not sigmoid)_**)
+- Implement multi-class classification (**_use negative sampling or softmax (not sigmoid)_**)
 - Handle multiple pages for json output into the dataframe.
 - Apply text classification, start with **label encoding** based on genre from the dataframe. 
     - *More label encoding based on different criterias to be applied later as needed.*
