@@ -6,6 +6,7 @@ import string, time
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
+from sklearn.preprocessing import LabelEncoder
 
 Key = os.getenv('TMDB_API_KEY')
 url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page=1"
@@ -58,4 +59,6 @@ our_model.train(overviews_title_df['overview'], total_examples=our_model.corpus_
 
 print(our_model.wv.most_similar("banker"))
 
-#
+# Label Encoder for movie classification based on genre
+our_encoder = LabelEncoder()
+y = our_encoder.fit_transform(overviews_title_df['genre_ids'])
