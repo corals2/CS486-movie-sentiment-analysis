@@ -11,6 +11,8 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
+import json
+import requests
 
 Key = os.getenv('TMDB_API_KEY')
 url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page=1"
@@ -56,10 +58,17 @@ overviews_title_df.insert(0, "title", df_r[['title']])
 #print(df_r[['genre_ids']].head())
 #print([tuple(each_genre_id) for each_genre_id in df_r['genre_ids']])
 #df_r['genre_ids'] = [tuple(each_genre_id) for each_genre_id in df_r['genre_ids']] # convert list to list of tuples for unhashable type
-df_r['genre_ids'] = [np.mean(genre_list) for genre_list in df_r['genre_ids']] # convert list of tuples to list of strings
+# df_r['genre_ids'] = [np.mean(genre_list) for genre_list in df_r['genre_ids']] # convert list of tuples to list of strings
+df_r['genre_ids'] = [genre_list[0] if len(genre_list) > 0 else 0 for genre_list in df_r['genre_ids']]
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 
 genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
+genre_json = requests.get(genre_url).text
+genre_dict = json.loads(genre_json)
+print(genre_dict)
+
+# TODO: Work on getting the genre for each of the movies using their genre_ids, from this dictionary!!
+
 
 
 print(overviews_title_df)
