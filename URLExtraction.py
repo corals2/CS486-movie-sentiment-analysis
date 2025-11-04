@@ -14,11 +14,26 @@ from sklearn.ensemble import RandomForestClassifier
 
 Key = os.getenv('TMDB_API_KEY')
 url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page=1"
-
-
 datafrm = pd.read_json(url)
 datafrm = pd.DataFrame(datafrm)
 df_r = pd.json_normalize(datafrm['results'])
+for i in range(2,3):
+    url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page={i}"
+    temp_datafrm = pd.read_json(url)
+    temp_datafrm = pd.DataFrame(temp_datafrm)
+    temp_df_r = pd.json_normalize(temp_datafrm['results'])
+    # tmp_moviedata = temp_df_r[['title', 'genre_ids', 'overview', 'vote_average']]
+    # print(df_r)
+    # df_r = df_r.append(temp_df_r)
+    df_r = pd.concat([df_r, temp_df_r], axis=0, ignore_index=True)
+    
+    # print(df_r)
+
+
+
+# datafrm = pd.read_json(url)
+# datafrm = pd.DataFrame(datafrm)
+# df_r = pd.json_normalize(datafrm['results'])
 moviedata = df_r[['title', 'genre_ids', 'overview', 'vote_average']]
 
 # text preprocessing on overview column
@@ -47,7 +62,7 @@ overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
 
 
-print(overviews_title_df.head())
+print(overviews_title_df)
 
 # word to vec model
 our_model = gensim.models.Word2Vec(
