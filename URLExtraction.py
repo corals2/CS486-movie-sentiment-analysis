@@ -11,13 +11,15 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
+import json
 
 Key = os.getenv('TMDB_API_KEY')
 url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page=1"
 datafrm = pd.read_json(url)
 datafrm = pd.DataFrame(datafrm)
 df_r = pd.json_normalize(datafrm['results'])
-for i in range(2,475):
+#TODO: Increase the number of pages.
+for i in range(2,3):
     url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page={i}"
     temp_datafrm = pd.read_json(url)
     temp_datafrm = pd.DataFrame(temp_datafrm)
