@@ -45,6 +45,9 @@ df_r['genre_ids'] = [np.mean(genre_list) for genre_list in df_r['genre_ids']] # 
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 
 genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
+genre_json = requests.get(genre_url).text
+genre_dict = json.loads(genre_json)
+print(genre_dict)
 
 
 print(overviews_title_df.head())
