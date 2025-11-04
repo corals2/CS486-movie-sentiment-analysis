@@ -17,7 +17,7 @@ url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-U
 datafrm = pd.read_json(url)
 datafrm = pd.DataFrame(datafrm)
 df_r = pd.json_normalize(datafrm['results'])
-for i in range(2,3):
+for i in range(2,475):
     url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page={i}"
     temp_datafrm = pd.read_json(url)
     temp_datafrm = pd.DataFrame(temp_datafrm)
@@ -26,7 +26,6 @@ for i in range(2,3):
     # print(df_r)
     # df_r = df_r.append(temp_df_r)
     df_r = pd.concat([df_r, temp_df_r], axis=0, ignore_index=True)
-    
     # print(df_r)
 
 
@@ -56,7 +55,9 @@ overviews_title_df.insert(0, "title", df_r[['title']])
 #print(df_r[['genre_ids']].head())
 #print([tuple(each_genre_id) for each_genre_id in df_r['genre_ids']])
 #df_r['genre_ids'] = [tuple(each_genre_id) for each_genre_id in df_r['genre_ids']] # convert list to list of tuples for unhashable type
-df_r['genre_ids'] = [np.mean(genre_list) for genre_list in df_r['genre_ids']] # convert list of tuples to list of strings
+#df_r['genre_ids'] = [np.mean(genre_list) for genre_list in df_r['genre_ids']] # convert list of tuples to list of strings
+df_r['genre_ids'] = [genre_list[0] if len(genre_list) > 0 else 1 for genre_list in df_r['genre_ids']] #grab first genre id only for simplification
+#print(df_r['genre_ids'].head())
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 
 genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
@@ -92,7 +93,11 @@ for overview in overviews_title_df['overview']: # create vectors for each overvi
             vector.append(our_model.wv[word])
     #print(f"Overview: {overview}")
     #print(f"Vector: {vector}")
+    if len(vector) == 0:
+        vector.append(np.zeros(our_model.vector_size)) # if no words in overview, append zero vector
+        #print("ZERO VECTOR APPENDED")
     x.append(np.mean(vector, axis=0)) # x is the list of overview vectors
+
 
 
 
