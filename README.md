@@ -58,15 +58,27 @@ I*F there is a space complexity problem: remove movies lower than the threshold 
 
 ### Next Meet (26 Oct - 1 Nov anytime): 
 > **Completed Oct 27**
-- Implement multi-class classification (**_use negative sampling or softmax (not sigmoid)_**) (__*potential better accuracy implementation*__).
-- Handle multiple pages for json output into the dataframe (__*needed for potential better accuracy, with more data*__).
 - ~~Apply text classification, start with **label encoding** based on genre from the dataframe.~~
     - ~~*More label encoding based on different criterias to be applied later as needed.*~~
 - ~~Implement the model, train and test it for classification based on accuracy.~~
-- Work on getting the genres for each of the movies. Eventual shift from *genre_ids* to *genres*.
-- Maybe implement the first genre for each of the movies, **or** implement all the genres as separate classes (__*potential implementation to improve the accuracy*__).
-- Experimenting on the representation of each of the overviews,maybe adding instead of finding the mean (**_for potential better accuracy_**).
 - **TO-DO**:
     - [x] **Meet and complete the requirements.**
+
+### Next Meet (2-8 Nov anytime):
+> **Completed Nov 3**
+- ~~Handle multiple pages for json output into the dataframe (__*needed for potential better accuracy, with more data*__).~~
+- ~~Maybe implement the first genre for each of the movies, do **not** implement all the genres as separate classes (__*potential implementation to improve the accuracy*__), maybe add the implementation of multiple genres for a movies, classify it under different genre in that case.~~
+- **TO-DO**:
+    - [x] **Meet and complete the requirements.**
+
+### Next Meet (9-15 Nov anytime):
+- Work on getting the genres for each of the movies. Eventual shift from *genre_ids* to *genres*.
+- Experimenting on the representation of each of the overviews, maybe adding instead of finding the mean (**_for potential better accuracy_**).
+- Implement multi-class classification (**_use negative sampling or softmax (not sigmoid)_**) (__*potential better accuracy implementation*__).
+- **TO-DO**:
+    - [x] **Meet and complete the requirements.**
+
+## Problems:
+- Classification of multiple genres of a movie as a separate class, which leads to the creation of a huge number of classes, reducing the accuracy.
 
 
