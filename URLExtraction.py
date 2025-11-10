@@ -19,7 +19,7 @@ datafrm = pd.read_json(url)
 datafrm = pd.DataFrame(datafrm)
 df_r = pd.json_normalize(datafrm['results'])
 #TODO: Increase the number of pages.
-for i in range(2,21):
+for i in range(2,501):
     url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page={i}"
     temp_datafrm = pd.read_json(url)
     temp_datafrm = pd.DataFrame(temp_datafrm)
@@ -76,13 +76,28 @@ df_r['genre_ids'] = [genre_list[0] if len(genre_list) > 0 else 1 for genre_list 
     # Western [37]
 
 # Combining the different genres as a single genre, by taking the first genre.
-df_r['genre_ids'] = [28 if genre == 28 or genre == 12 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10751 else(10749 if genre == 10749 or genre == 10402 else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
+# df_r['genre_ids'] = [28 if genre == 28 or genre == 12 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10751 else(10749 if genre == 10749 or genre == 10402 else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
 # df_r['genre_ids'] = [16 if genre == 16 or genre == 10770 else genre for genre in df_r['genre_ids']]
 # df_r['genre_ids'] = [80 if genre == 80 or genre == 9648 or genre == 53 else genre for genre in df_r['genre_ids']]
 # df_r['genre_ids'] = [99 if genre == 99 or genre == 36 else genre for genre in df_r['genre_ids']]
 # df_r['genre_ids'] = [18 if genre == 18 or genre == 10751 else genre for genre in df_r['genre_ids']]
 # df_r['genre_ids'] = [10749 if genre == 10749 or genre == 10402 else genre for genre in df_r['genre_ids']]
 # df_r['genre_ids'] = [14 if genre == 14 or genre == 878 else genre for genre in df_r['genre_ids']]
+# accuracy : 0.324
+
+
+    # Action and Adventure and War [28, 12, 10752]
+    # Animation and TV Movie [16, 10770]
+    # Crime, Mystery and Thriller and Horror [80, 9648, 53, 27]
+    # Documentary and History [99, 36]
+    # Drama and Music and Western [18, 10402, 37]
+    # Romance and Comedy and Family[10749, 35, 10751]
+    # Fantasy and Science Fiction [14, 878]
+    # Western [37]
+# accuracy 0.361
+
+df_r['genre_ids'] = [28 if genre == 28 or genre == 12 or genre == 10752 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 or genre == 27 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10402 else(10749 if genre == 10749 or genre == 35 or genre == 10751  else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
+
 
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 
@@ -96,8 +111,8 @@ print(genre_dict)
 
 # word to vec model
 our_model = gensim.models.Word2Vec(
-    window= 10, # window around target word
-    min_count=1,
+    window= 20, # window around target word
+    min_count=2,
 )
 
 # build vocab from overviews column in dataframe, this is a list of unique words
