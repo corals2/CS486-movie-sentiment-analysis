@@ -19,7 +19,7 @@ datafrm = pd.read_json(url)
 datafrm = pd.DataFrame(datafrm)
 df_r = pd.json_normalize(datafrm['results'])
 #TODO: Increase the number of pages.
-for i in range(2,501):
+for i in range(2,21):
     url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page={i}"
     temp_datafrm = pd.read_json(url)
     temp_datafrm = pd.DataFrame(temp_datafrm)
@@ -76,13 +76,13 @@ df_r['genre_ids'] = [genre_list[0] if len(genre_list) > 0 else 1 for genre_list 
     # Western [37]
 
 # Combining the different genres as a single genre, by taking the first genre.
-df_r['genre_ids'] = [28 if genre == 28 or genre == 12 else genre for genre in df_r['genre_ids']]
-df_r['genre_ids'] = [16 if genre == 16 or genre == 10770 else genre for genre in df_r['genre_ids']]
-df_r['genre_ids'] = [80 if genre == 80 or genre == 9648 or genre == 53 else genre for genre in df_r['genre_ids']]
-df_r['genre_ids'] = [99 if genre == 99 or genre == 36 else genre for genre in df_r['genre_ids']]
-df_r['genre_ids'] = [18 if genre == 18 or genre == 10751 else genre for genre in df_r['genre_ids']]
-df_r['genre_ids'] = [10749 if genre == 10749 or genre == 10402 else genre for genre in df_r['genre_ids']]
-df_r['genre_ids'] = [14 if genre == 14 or genre == 878 else genre for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [28 if genre == 28 or genre == 12 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10751 else(10749 if genre == 10749 or genre == 10402 else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
+# df_r['genre_ids'] = [16 if genre == 16 or genre == 10770 else genre for genre in df_r['genre_ids']]
+# df_r['genre_ids'] = [80 if genre == 80 or genre == 9648 or genre == 53 else genre for genre in df_r['genre_ids']]
+# df_r['genre_ids'] = [99 if genre == 99 or genre == 36 else genre for genre in df_r['genre_ids']]
+# df_r['genre_ids'] = [18 if genre == 18 or genre == 10751 else genre for genre in df_r['genre_ids']]
+# df_r['genre_ids'] = [10749 if genre == 10749 or genre == 10402 else genre for genre in df_r['genre_ids']]
+# df_r['genre_ids'] = [14 if genre == 14 or genre == 878 else genre for genre in df_r['genre_ids']]
 
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 
