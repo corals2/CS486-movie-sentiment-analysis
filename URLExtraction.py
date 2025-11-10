@@ -60,6 +60,30 @@ overviews_title_df.insert(0, "title", df_r[['title']])
 #df_r['genre_ids'] = [np.mean(genre_list) for genre_list in df_r['genre_ids']] # convert list of tuples to list of strings
 df_r['genre_ids'] = [genre_list[0] if len(genre_list) > 0 else 1 for genre_list in df_r['genre_ids']] #grab first genre id only for simplification
 #print(df_r['genre_ids'].head())
+
+# Combined genres for lesser number of classes, for classification:
+#
+    # Action and Adventure [28, 12]
+    # Animation and TV Movie [16, 10770]
+    # Comedy [35]
+    # Crime, Mystery and Thriller [80, 9648, 53]
+    # Documentary and History [99, 36]
+    # Drama and Family [18, 10751]
+    # Romance and Music [10749, 10402]
+    # Fantasy and Science Fiction [14, 878]
+    # Horror [27]
+    # War [10752]
+    # Western [37]
+
+# Combining the different genres as a single genre, by taking the first genre.
+df_r['genre_ids'] = [28 if genre == 28 or genre == 12 else genre for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [16 if genre == 16 or genre == 10770 else genre for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [80 if genre == 80 or genre == 9648 or genre == 53 else genre for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [99 if genre == 99 or genre == 36 else genre for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [18 if genre == 18 or genre == 10751 else genre for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [10749 if genre == 10749 or genre == 10402 else genre for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [14 if genre == 14 or genre == 878 else genre for genre in df_r['genre_ids']]
+
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
 
 genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={Key}&language=en-US"
@@ -68,7 +92,7 @@ genre_dict = json.loads(genre_json)
 print(genre_dict)
 
 
-print(overviews_title_df)
+# print(overviews_title_df)
 
 # word to vec model
 our_model = gensim.models.Word2Vec(
@@ -84,6 +108,7 @@ our_model.build_vocab(overviews_title_df['overview'])
 our_model.train(overviews_title_df['overview'], total_examples=our_model.corpus_count, epochs=our_model.epochs)
 
 #print(our_model.wv.most_similar("banker"))
+
 
 # Label Encoder for movie classification based on genre
 our_encoder = LabelEncoder()
