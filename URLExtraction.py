@@ -19,7 +19,7 @@ datafrm = pd.read_json(url)
 datafrm = pd.DataFrame(datafrm)
 df_r = pd.json_normalize(datafrm['results'])
 #TODO: Increase the number of pages.
-for i in range(2,3):
+for i in range(2,501):
     url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={Key}&language=en-US&page={i}"
     temp_datafrm = pd.read_json(url)
     temp_datafrm = pd.DataFrame(temp_datafrm)
@@ -101,6 +101,7 @@ for overview in overviews_title_df['overview']: # create vectors for each overvi
     if len(vector) == 0:
         vector.append(np.zeros(our_model.vector_size)) # if no words in overview, append zero vector
         #print("ZERO VECTOR APPENDED")
+    # x.append(np.sum(vector, axis=0))
     x.append(np.mean(vector, axis=0)) # x is the list of overview vectors
 
 
