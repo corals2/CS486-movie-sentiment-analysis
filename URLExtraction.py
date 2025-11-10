@@ -37,9 +37,12 @@ for i in range(2,501):
 # df_r = pd.json_normalize(datafrm['results'])
 moviedata = df_r[['title', 'genre_ids', 'overview', 'vote_average']]
 
+
 # text preprocessing on overview column
 #Lowercasing
-overviews_title_df = moviedata['overview'].str.lower()
+#overviews_title_df = moviedata['overview'].str.lower()
+combined_text = moviedata['title'].str.lower() + " " + moviedata['overview'].str.lower()
+overviews_title_df = pd.Series(combined_text) # include title and overview in text to process
 #Punctuation Removal
 overviews_title_df = overviews_title_df.str.translate(str.maketrans("","",string.punctuation))
 #Word Tokenization
@@ -50,7 +53,12 @@ overviews_title_df = overviews_title_df.apply(lambda x: [word for word in x if w
 port_stem = PorterStemmer()
 overviews_title_df = overviews_title_df.apply(lambda text: [port_stem.stem(word) for word in text])
 
-overviews_title_df = pd.DataFrame(overviews_title_df)
+overviews_title_df = pd.DataFrame(overviews_title_df, columns=['overview'])
+
+
+# overviews_title_df = pd.DataFrame(overviews_title_df) original code 
+
+
 
 # new_df = overviews_title_df.assign(title=df_r[['title']])
 overviews_title_df.insert(0, "title", df_r[['title']])
