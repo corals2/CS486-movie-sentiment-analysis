@@ -76,7 +76,6 @@ I*F there is a space complexity problem: remove movies lower than the threshold 
 - Experimenting on the representation of each of the overviews, maybe adding instead of finding the mean (**_for potential better accuracy_**).
 - Implement multi-class classification (**_use negative sampling or softmax (not sigmoid)_**) (__*potential better accuracy implementation*__).
 - Word2Vec adjustments for improved accuracy
-- Live demo decisions
 - Approve presentation duty split
 - **TO-DO**:
     - [x] **Meet and complete the requirements.**
