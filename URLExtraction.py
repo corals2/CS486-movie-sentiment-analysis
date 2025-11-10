@@ -104,7 +104,7 @@ df_r['genre_ids'] = [genre_list[0] if len(genre_list) > 0 else 1 for genre_list 
     # Western [37]
 # accuracy 0.3875
 
-df_r['genre_ids'] = [28 if genre == 28 or genre == 12 or genre == 10752 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 or genre == 27 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10402 else(10749 if genre == 10749 or genre == 35 or genre == 10751  else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [28 if genre == 28 or genre == 12 or genre == 10752 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 or genre == 27 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10402 or genre == 37 else(10749 if genre == 10749 or genre == 35 or genre == 10751  else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
 
 
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
