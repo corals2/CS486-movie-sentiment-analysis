@@ -8,7 +8,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 import json
@@ -104,7 +104,7 @@ df_r['genre_ids'] = [genre_list[0] if len(genre_list) > 0 else 1 for genre_list 
     # Western [37]
 # accuracy 0.3875
 
-df_r['genre_ids'] = [28 if genre == 28 or genre == 12 or genre == 10752 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 or genre == 27 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10402 or genre == 37 else(10749 if genre == 10749 or genre == 35 or genre == 10751  else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
+df_r['genre_ids'] = [28 if genre == 28 or genre == 12 or genre == 10752 else (16 if genre == 16 or genre == 10770 else (80 if genre == 80 or genre == 9648 or genre == 53 or genre == 27 else (99 if genre == 99 or genre == 36 else(18 if genre == 18 or genre == 10402 else(10749 if genre == 10749 or genre == 35 or genre == 10751  else (14 if genre == 14 or genre == 878 else genre)))))) for genre in df_r['genre_ids']]
 
 
 overviews_title_df.insert(2, "genre_ids", df_r['genre_ids'])
@@ -128,7 +128,7 @@ our_model.build_vocab(overviews_title_df['overview'])
 # print(our_model.wv.index_to_key)
 
 # train the word2vec model.
-our_model.train(overviews_title_df['overview'], total_examples=our_model.corpus_count, epochs=our_model.epochs)
+our_model.train(overviews_title_df['overview'], total_examples=our_model.corpus_count, epochs=10)
 
 #print(our_model.wv.most_similar("banker"))
 
@@ -150,7 +150,7 @@ for overview in overviews_title_df['overview']: # create vectors for each overvi
         vector.append(np.zeros(our_model.vector_size)) # if no words in overview, append zero vector
         #print("ZERO VECTOR APPENDED")
     # x.append(np.sum(vector, axis=0))
-    x.append(np.mean(vector, axis=0)) # x is the list of overview vectors
+    x.append(np.sum(vector, axis=0)) # x is the list of overview vectors
 
 
 
@@ -159,14 +159,22 @@ for overview in overviews_title_df['overview']: # create vectors for each overvi
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_state=1) # split data into training and testing sets
 
-#Using RandomForestClassifier to train and test the model, and then calculating the accuracy score based on the prediction.
-our_rfc = RandomForestClassifier()
+# #Using RandomForestClassifier to train and test the model, and then calculating the accuracy score based on the prediction.
+# our_rfc = RandomForestClassifier()
 
-#Training the model.
-our_rfc.fit(x_train, y_train)
+# #Training the model.
+# our_rfc.fit(x_train, y_train)
+# accuracy = 0.382, cv accuracy = 0.3852
+
+#Using RandomForestClassifier with hyperparameter tuning.
+param_grid = {'n_estimators': [50, 100], 'max_depth': [None, 10]}
+grid = GridSearchCV(RandomForestClassifier(class_weight='balanced'), param_grid, cv=3)
+our_rfc = grid.fit(x_train, y_train).best_estimator_
+# accuracy = 0.451, cv accuracy = 0.4401
 
 #Testing the model, getting the predicted label of the model.
 y_prediction = our_rfc.predict(x_test)
 
 #Calculating the accuracy score of the model, comparing the prediction with the true label.
 print(accuracy_score(y_prediction, y_test))
+print("Cross-validated accuracy:", cross_val_score(our_rfc, x, y, cv=5).mean())
