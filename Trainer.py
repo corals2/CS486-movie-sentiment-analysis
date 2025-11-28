@@ -118,10 +118,12 @@ print(genre_dict)
 
 # print(overviews_title_df)
 
+## BERTTTTTT
+#TF-IDF, Try BERT first!!!!
 # word to vec model
 our_model = gensim.models.Word2Vec(
     window=15, # window around target word
-    min_count=2,
+    min_count=1,
 )
 
 # build vocab from overviews column in dataframe, this is a list of unique words
