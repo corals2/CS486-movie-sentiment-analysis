@@ -11,6 +11,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
+import xgboost as xgb
 import json
 
 Key = os.getenv('TMDB_API_KEY')
@@ -117,10 +118,12 @@ print(genre_dict)
 
 # print(overviews_title_df)
 
+## BERTTTTTT
+#TF-IDF, Try BERT first!!!!
 # word to vec model
 our_model = gensim.models.Word2Vec(
     window=15, # window around target word
-    min_count=2,
+    min_count=1,
 )
 
 # build vocab from overviews column in dataframe, this is a list of unique words
@@ -166,15 +169,35 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2, random_s
 # our_rfc.fit(x_train, y_train)
 # accuracy = 0.382, cv accuracy = 0.3852
 
-#Using RandomForestClassifier with hyperparameter tuning.
-param_grid = {'n_estimators': [50, 100], 'max_depth': [None, 10]}
-grid = GridSearchCV(RandomForestClassifier(class_weight='balanced'), param_grid, cv=3)
-our_rfc = grid.fit(x_train, y_train).best_estimator_
-# accuracy = 0.451, cv accuracy = 0.4401
+# #Using RandomForestClassifier with hyperparameter tuning.
+# param_grid = {'n_estimators': [50, 100], 'max_depth': [None, 10]}
+# grid = GridSearchCV(RandomForestClassifier(class_weight='balanced'), param_grid, cv=3)
+# our_rfc = grid.fit(x_train, y_train).best_estimator_
+# # accuracy = 0.451, cv accuracy = 0.4401
 
-#Testing the model, getting the predicted label of the model.
-y_prediction = our_rfc.predict(x_test)
+# #Testing the model, getting the predicted label of the model.
+# y_prediction = our_rfc.predict(x_test)
+
+# Using XGBoost (Extreme Gradient Boost) classifier instead of RandomForestClassifier
+xgb_train = xgb.DMatrix(x_train, y_train, enable_categorical=True)
+xgb_test = xgb.DMatrix(x_test, y_test, enable_categorical=True)
+
+# Training the XGBoost model.
+params = {
+    'objective': 'multi:softmax',
+    'num_class': 11,
+    'max_depth': 3,
+    'learning_rate': 0.1,
+}
+n=50
+model = xgb.train(params=params,dtrain=xgb_train,num_boost_round=n)
+
+# Doing label prediction, getting accuracy of the model
+preds = model.predict(xgb_test)
+preds = np.round(preds)
+accuracy= accuracy_score(y_test,preds)
+print('Accuracy of the model using XGBoost is:', accuracy)
 
 #Calculating the accuracy score of the model, comparing the prediction with the true label.
-print(accuracy_score(y_prediction, y_test))
-print("Cross-validated accuracy:", cross_val_score(our_rfc, x, y, cv=5).mean())
+# print(accuracy_score(y_prediction, y_test))
+# print("Cross-validated accuracy:", cross_val_score(our_rfc, x, y, cv=5).mean())
